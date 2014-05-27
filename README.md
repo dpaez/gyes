@@ -1,10 +1,12 @@
 # gyes client module
 
-### *Work In Progress*
+## Description
+Endpoint module for the plusultra platform. It handles from connection to modality creation passing through the web app logic. It is made to be used on both sides (server and client if needed).
 
-### Usage example - the whole thing -
+## Usage example
 
-# 1st create a _gyes_ instance
+### Creating a _gyes_ instance
+
 ```js
 var gyes = require( 'gyes' );
 
@@ -50,4 +52,4 @@ modality.start();
 // in other words, this starts the modality driver.
 ```
 
-
+### _WIP_
