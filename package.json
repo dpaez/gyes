@@ -1,0 +1,26 @@
+{
+  "name": "gyes",
+  "version": "0.0.1",
+  "description": "A plusultra client. Handles real-time multimodality interaction on web applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "multimodality",
+    "library",
+    "client",
+    "real-time"
+  ],
+  "author": "Diego Paez",
+  "license": "MIT",
+  "dependencies": {
+    "engine.io-client": "^1.0.5",
+    "socket.io-client": "~1.0.0",
+    "signals": "^1.0.0",
+    "set-collection": "^0.1.0"
+  },
+  "devDependencies": {
+    "should": "^3.3.0"
+  }
+}
