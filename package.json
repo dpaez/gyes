@@ -18,7 +18,8 @@
     "engine.io-client": "^1.0.5",
     "socket.io-client": "~1.0.0",
     "signals": "^1.0.0",
-    "set-collection": "^0.1.0"
+    "set-collection": "^0.1.0",
+    "debug": "~1.0.2"
   },
   "devDependencies": {
     "should": "^3.3.0"
