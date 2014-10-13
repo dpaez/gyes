@@ -1,0 +1,22 @@
+{
+  "opts":{
+    "template": "./node_modules/ink-docstrap/template/",
+    "destination": "./docs/"
+  },
+  "plugins": [ "plugins/markdown" ],
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true
+  },
+  "templates": {
+    "systemName"            : "Gyes",
+    "copyright"             : "2014 | Diego Paez",
+    "navType"               : "inline",
+    "theme"                 : "cosmo",
+    "outputSourceFiles"     : true,
+    "outputSourcePath"      : true,
+    "dateFormat"            : "DD - MMM - YYYY",
+    "highlightTutorialCode" : true,
+    "syntaxTheme"           : "dark"
+  }
+}

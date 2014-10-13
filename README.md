@@ -3,7 +3,7 @@ gyes
 
 ## Description
 
-Endpoint module for the plusultra platform. It handles from connection to modality creation passing through the web app logic. It is made to be used on both sides (server and client if needed).
+Endpoint module for the plusultra platform. It handles everything from connection to modality creation passing through the web app logic. It is made to be used on both sides (server and client if needed).
 
 ## Usage example
 

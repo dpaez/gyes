@@ -11,7 +11,8 @@ var Modality = gyes.Modality;
  * Test locals variables
  */
 
-var socketURI = 'ws://0.0.0.0:26060';
+//var socketURI = 'ws://0.0.0.0:26060';
+var socketURI = 'ws://plusultra-dk5.rhcloud.com:8000/';
 var options ={
   // transports: ['websocket'],
   'force new connection': true,

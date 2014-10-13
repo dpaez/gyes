@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Gyes Source: fusion.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top ">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Gyes</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu inline">
+						
+						<li>
+							<a href="module-Clocks.html">Clocks</a>
+						</li>
+						
+						<li>
+							<a href="module-Fission.html">Fission</a>
+						</li>
+						
+						<li>
+							<a href="module-Fusion.html">Fusion</a>
+						</li>
+						
+						<li>
+							<a href="module-Gyes.html">Gyes</a>
+						</li>
+						
+						<li>
+							<a href="module-Interpretation.html">Interpretation</a>
+						</li>
+						
+						<li>
+							<a href="module-Messaging.html">Messaging</a>
+						</li>
+						
+						<li>
+							<a href="module-Modality.html">Modality</a>
+						</li>
+						
+						<li>
+							<a href="module-ModalityDriver.html">ModalityDriver</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu inline">
+						
+						<li>
+							<a href="module-Clocks-Clock.html">Clocks~Clock</a>
+						</li>
+						
+						<li>
+							<a href="module-Fission-Fission.html">Fission~Fission</a>
+						</li>
+						
+						<li>
+							<a href="module-Fusion-Fusion.html">Fusion~Fusion</a>
+						</li>
+						
+						<li>
+							<a href="module-Gyes-Gyes.html">Gyes~Gyes</a>
+						</li>
+						
+						<li>
+							<a href="module-Interpretation-Interpretation.html">Interpretation~Interpretation</a>
+						</li>
+						
+						<li>
+							<a href="module-Modality-Modality.html">Modality~Modality</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu inline">
+						
+						<li>
+							<a href="Clocks.html#event:stop">Clocks#event:stop</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: fusion.js</h1>
+    
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript ">/**
+ * @module Fusion
+ */
+
+/**
+ * Module dependencies
+ */
+
+var util = require( 'util' );
+var Emitter = require( 'events' ).EventEmitter;
+var debug = require('debug')('gyes:fusion');
+var messaging = require( './messaging' );
+
+/**
+ * Module exports
+ */
+module.exports = Fusion;
+
+/**
+ * Module constructor
+ * @constructor
+ */
+function Fusion( opts ){
+  opts = opts || {};
+  this.interpretations = {};
+  this.events = {};
+  this.totalI = 0;
+  this.verbose = opts.verbose || false;
+
+  this.setup();
+}
+
+
+/**
+ * Extending with Emitter
+ */
+
+util.inherits( Fusion, Emitter );
+
+/**
+ * Module methods
+ */
+
+/**
+ * setup Setup private events
+ * @private
+ */
+Fusion.prototype.setup = function(){
+  messaging.on( 'gyes::new_signal', this.onSignal.bind(this) );
+};
+
+/**
+ * fuse Adds a new fusion to the fusion system.
+ * @param  {Object} anInterpretation One or more modality events which defines a fusion.
+ * @public
+ */
+Fusion.prototype.fuse = function( anInterpretation ){
+
+  if ( 'undefined' === typeof anInterpretation ){
+    throw new Error( 'Missing arguments. At least one modality event is required.' );
+  }
+
+  // TODO: try here with workers
+  // var w = new Worker();
+
+  this.launchMultipleListeners( anInterpretation );
+};
+
+/**
+ * launchMultipleListeners Starts the internal fusion engine. Connects interpretation events with their signals.
+ * @param  {Object} anInterpretation An interpretation object.
+ * @private
+ */
+Fusion.prototype.launchMultipleListeners = function( anInterpretation ){
+  var self = this;
+
+  var modalityEvents = anInterpretation.getEventsList();
+  /*
+  for ( var i=0; i &lt; modalityEvents.length; i++ ){
+    // hooking up new modality events to be listened
+    this.on( modalityEvents[ i ], self.onEvent );
+  }
+  */
+  this.interpretations[ this.totalI++ ] = anInterpretation;
+
+  // create/update per event hash of interpretations
+  // one event can be part of many interpretations
+  // so this is done to avoid walk over all the interpretations.
+  for ( var j = 0; j &lt; modalityEvents.length; j++ ) {
+    var modalityEvent = modalityEvents[ j ];
+
+    // hooking up new modality events to be listened
+    this.on( modalityEvent, this.onEvent.bind( self ) );
+
+    this.events[ modalityEvent ] = this.events[ modalityEvent ] || [];
+
+    this.events[ modalityEvent ].push( anInterpretation );
+  }
+};
+
+/**
+ * onEvent Handles interpretations updates.
+ * @param  {String} eventName An string indicating a signals event name.
+ * @private
+ */
+Fusion.prototype.onEvent = function( eventName ){
+  // TODO: do it the async way... :/
+  var eventInterpretations = this.events[ eventName ] || [];
+
+  console.log( 'interpretation::onEvent ', eventInterpretations );
+
+  for ( var i = 0; i &lt; eventInterpretations.length; i++ ){
+    //eventInterpretations[ i ].touch( eventName );
+    eventInterpretations[ i ].touch.call( eventInterpretations[ i ], eventName );
+  }
+
+};
+
+/**
+ * onSignal Handles the connection with the rest of the clients. When a distributed signal happens this will be activated.
+ * @param  {Object} data A signal object representation.
+ * @private
+ */
+Fusion.prototype.onSignal = function( data ){
+  debug( 'fusion::onSignal ', data );
+
+  // TODO: improve comments :)
+  // if do data.gesture then this is a hardcoded solution...
+  // Must think on a modality driver (mini) protocol
+  this.emit( data.gesture, data.gesture );
+  if ( this.verbose ){
+    this.emit( 'fusion::onSignal', data );
+  }
+};</pre>
+	</article>
+</section>
+
+
+
+
+
+				</div>
+
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		2014 | Diego Paez
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a>
+		on 20 - Sep - 2014 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
+
+			
+			<br clear="both">
+		</div>
+
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : false,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
+</body>
+</html>
