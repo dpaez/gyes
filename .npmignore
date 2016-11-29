@@ -1,2 +1,6 @@
 docs
 support
+test
+docs.json
+buildDocs.sh
+gulpfile.js
