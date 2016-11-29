@@ -11,8 +11,9 @@ var Modality = gyes.Modality;
  * Test locals variables
  */
 
-var socketURI = 'ws://localhost:26060';
+//var socketURI = 'ws://localhost:26060';
 //var socketURI = 'ws://plusultra.geutstudio.com';
+var socketURI = 'ws://104.236.52.130/plusultra'
 
 var options = {
   // transports: ['websocket'],
@@ -30,7 +31,7 @@ describe('connection', function(){
     var app_key = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoidGVzdCIsInNjb3BlcyI6WyJtZWRpdW0iXSwiaWF0IjoxNDQzMjgzMTQzfQ.DcIqzxDbFrjP-lTO_8G5g-SncRxwRcYbaPuajgJtHbI';
 
     var client = new gyes( app_key, socketURI, options );
-    console.log('client is ', client.io.on)
+
     client.should.be.an.instanceOf( gyes );
     client.io.should.have.property( 'on' );
 
@@ -45,8 +46,8 @@ describe('connection', function(){
         console.info( 'unauthorized!' );
         done();
       })
-      /*.io.on( 'error', function ( e ){ 
-        console.log('Connection Error: ', e) 
+      /*.io.on( 'error', function ( e ){
+        console.log('Connection Error: ', e)
         done();
       })*/
 
@@ -67,7 +68,7 @@ describe('connected behavior', function(){
 
   client.should.be.an.instanceOf( gyes );
   client.io.should.have.property( 'on' );
-  
+
   // connect
   beforeEach(function(done) {
 
@@ -96,22 +97,22 @@ describe('connected behavior', function(){
   // Add a modality driver
   describe('Add a new modality driver', function(){
 
-/*    it('should add a new modality driver to the plusultra server', function( done ){
-  
+    it('should add a new modality driver to the plusultra server', function( done ){
+      console.log('client', client)
       client.should.be.an.instanceOf( gyes );
 
       modality.use( leapDriver );
 
       client.addModality( app_key, modality );
-      
+
       should.not.exist(err);
 
       client.io.on('ACK', function(err, msg){
         should.not.exist(err);
         done();
       });
-    
-    });*/
+
+    });
 
     it('should send a modality signal via plusultra and trigger an interpretation event', function( done ){
 
@@ -130,17 +131,17 @@ describe('connected behavior', function(){
       // create a fission module
       _fission = new gyes.Fission();
       // listen for interpretation to happen
-      
+
       // Mocking modality event
       _modality_data.gesture = 'swipe';
       _fusion.onSignal( _modality_data, _modality_data );
       //_messaging.emit( 'gyes::recognize', {'data':data} );
-      
+
       _fission.on( _gestureInterpretation.getName(), function( data ){
         console.log( 'An interpretation happens: ', data );
         done();
       });
-      
+
       gyes.emitInterpretation( _gestureInterpretation );
     });
   });

@@ -1,7 +1,7 @@
 {
   "name": "gyes",
   "version": "0.0.1",
-  "description": "A plusultra client. Handles real-time multimodality interaction on web applications.",
+  "description": "A plusultra client. Handles real-time multimodal interactions on web applications.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
