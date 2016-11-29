@@ -1,6 +1,6 @@
 {
   "name": "gyes",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A plusultra client. Handles real-time multimodal interactions on node applications.",
   "main": "index.js",
   "scripts": {
