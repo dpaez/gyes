@@ -1,7 +1,7 @@
 {
   "name": "gyes",
-  "version": "1.0.0",
-  "description": "A plusultra client. Handles real-time multimodal interactions on web applications.",
+  "version": "0.0.1",
+  "description": "A plusultra client. Handles real-time multimodal interactions on node applications.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
@@ -14,6 +14,14 @@
   ],
   "author": "Diego Paez",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dpaez/gyes"
+  },
+  "bugs": {
+    "url": "https://github.com/dpaez/gyes/issues",
+    "email": "diego@geutstudio.com"
+  },
   "dependencies": {
     "engine.io-client": "^1.0.5",
     "socket.io-client": "~1.0.0",
