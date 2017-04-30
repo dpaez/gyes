@@ -1,8 +1,6 @@
 gyes
 ====
 
-[![Join the chat at https://gitter.im/gyes_mmi/Lobby](https://badges.gitter.im/gyes_mmi/Lobby.svg)](https://gitter.im/gyes_mmi/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ## Description
 
 Endpoint module for the plusultra platform. It handles everything from connection to modality creation passing through the web app logic. It is made to be used on both sides (server and client if needed).
@@ -55,5 +53,8 @@ modality.start();
 // and you go away, this would send data if its a recog or send if its a synt or both.
 // in other words, this starts the modality driver.
 ```
+## Read More
+
+[Whitepaper](https://github.com/geut/plusultra_whitepaper)
 
 ### _WIP_
